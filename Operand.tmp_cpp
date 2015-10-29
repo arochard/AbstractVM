@@ -1,0 +1,51 @@
+# include "Operand.hpp"
+
+Operand::Operand(eOperandType type, T& value)
+{
+
+}
+
+Operand::~Operand()
+{
+
+}
+
+int 				Operand::getPrecision( void ) const
+{
+
+}
+
+eOperandType 		Operand::getType( void ) const
+{
+
+}
+
+IOperand const * 	Operand::operator+( IOperand const & rhs ) const
+{
+
+}
+
+IOperand const * 	Operand::operator-( IOperand const & rhs ) const
+{
+
+}
+
+IOperand const * 	Operand::operator*( IOperand const & rhs ) const
+{
+
+}
+
+IOperand const * 	Operand::operator/( IOperand const & rhs ) const
+{
+
+}
+
+IOperand const * 	Operand::operator%( IOperand const & rhs ) const
+{
+
+}
+
+std::string const & Operand::toString( void ) const
+{
+
+}
