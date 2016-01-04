@@ -2,6 +2,7 @@
 #define ABSTRACTVM_HPP
 
 # include "Operand.hpp"
+# include "Exception.hpp"
 # include <list>
 # include <iostream>
 
@@ -17,7 +18,31 @@ enum eInstructType
 	DIV,
 	MOD,
 	PRINT,
-	EXIT
+	EXIT,
+	DSEM
+};
+
+typedef struct 		s_instruct
+{
+	eInstructType	type;
+	std::string	instructStr;
+	bool		value;
+}			t_instruct;
+
+static 	t_instruct	in[]
+{
+	{PUSH, "push", true},
+	{POP, "pop", false},
+	{ASSERT, "assert", true},
+	{DUMP, "dump", false},
+	{ADD, "add", false},
+	{SUB, "sub", false},
+	{MUL, "mul", false},
+	{DIV, "div", false},
+	{MOD, "mod", false},
+	{PRINT, "print", false},
+	{EXIT, "exit", false},
+	{DSEM, ";;", false}
 };
 
 typedef	struct 		s_line
@@ -36,7 +61,7 @@ class AbstractVM
 		typedef IOperand const * (AbstractVM::*GenericCreateOp)(std::string const & value) const;
 		
 		listeOp			_stack;
-		int 			_stackSize;
+		//int 			_stackSize;
 		GenericCreateOp	_arrayPtr[5];
 
 
@@ -49,13 +74,15 @@ class AbstractVM
 		AbstractVM&		operator=(const AbstractVM& src);
 		AbstractVM(const AbstractVM&);
 
+		
+
 	public:
 		AbstractVM();
 		~AbstractVM();
 
 		IOperand const * createOperand( eOperandType type, std::string const & value ) const;
 
-		void		executeLine(t_line);
+		void		executeLine(t_line*);
 
 		void		push(IOperand*);
 		void		pop();

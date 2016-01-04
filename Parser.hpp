@@ -6,13 +6,13 @@
 class Parser
 {
 	private:
-		t_operand		_type;
-
-
+		void	 	checkInstruct(std::string str, t_line *line);
+		void		checkOperand(std::string str, t_line *line);
 	public:
 		Parser();
 		~Parser();
-	
+
+		t_line 		*extract(std::string str);	
 };
 
 #endif

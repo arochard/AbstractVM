@@ -1,4 +1,4 @@
-# include "AbstractVm.hpp"
+# include "AbstractVM.hpp"
 
 AbstractVM::AbstractVM()
 {
@@ -8,7 +8,7 @@ AbstractVM::AbstractVM()
 	this->_arrayPtr[3] = &AbstractVM::createFloat;
 	this->_arrayPtr[4] = &AbstractVM::createDouble;
 
-	this->_stackSize = 0;
+	//this->_stackSize = 0;
 }
 
 AbstractVM::~AbstractVM()
@@ -18,12 +18,28 @@ AbstractVM::~AbstractVM()
 
 IOperand const * AbstractVM::createInt8( std::string const & value ) const
 {
+	eOperandType	type;
+	char			tmp;
 
+	type = INT8;
+	tmp = std::stoi(value);
+
+	Operand<char> const *	data = new Operand<char>(type, tmp);
+
+	return data;
 }
 
 IOperand const * AbstractVM::createInt16( std::string const & value ) const
 {
-	
+	eOperandType	type;
+	short int			tmp;
+
+	type = INT16;
+	tmp = std::stoi(value);
+
+	Operand<short int> const *	data = new Operand<short int>(type, tmp);
+
+	return data;
 }
 
 IOperand const * AbstractVM::createInt32( std::string const & value ) const
@@ -81,33 +97,41 @@ IOperand const * AbstractVM::createOperand( eOperandType type, std::string const
 
 	return (this->*_arrayPtr[i])(value);
 }
-/*
-void		AbstractVM::executeLine(t_line)
+
+void		AbstractVM::executeLine(t_line *line)
 {
-	//
+	//temporaire
+	std::cout << "Instruct :" << line->instruct << std::endl;
+	std::cout << "Operand type :" << line->typeOperand << std::endl;
+	std::cout << "Value :" << line->value << std::endl;
 }
-*/
+
 void		AbstractVM::push(IOperand* value)
 {
 	this->_stack.push_back(value);
-	this->_stackSize++;
+	//this->_stackSize++;
 }
 
 void		AbstractVM::pop()
 {
-	if (this->_stackSize > 0)
+	if (!this->_stack.empty())
 	{
 		this->_stack.pop_back();
-		this->_stackSize--;
+		//this->_stackSize--;
 	}
 	else
-		//error
+		throw Exception("Error : Pop on a empty stack");
 }
 
 void		AbstractVM::dump()
 {
-	for (listeOp::iterator it = this->_stack.end(); it != this->_stack.begin(); it--)
-		std::cout << *it << std::endl;
+	if (this->_stack.empty())
+		throw Exception("Error : Dump on a empty stack");
+	else
+	{
+		for (listeOp::iterator it = this->_stack.end(); it != this->_stack.begin(); it--)
+			std::cout << *it << std::endl;
+	}
 }
 /*
 void		AbstractVM::add()
@@ -133,4 +157,4 @@ void		AbstractVM::div()
 void		AbstractVM::mod()
 {
 
-}
+}*/

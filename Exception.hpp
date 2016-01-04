@@ -3,6 +3,7 @@
 
 # include <exception>
 # include <string>
+# include <sstream>
 
 class Exception : public std::exception
 {
@@ -11,6 +12,7 @@ class Exception : public std::exception
 
 	public:
 		Exception(const char *msg);
+		Exception(const char *msg, int line);
 		virtual ~Exception() throw();
 		virtual const char* what() const throw();
 	

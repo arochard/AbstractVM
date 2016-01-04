@@ -4,6 +4,7 @@
 # include <string>
 # include <limits>
 
+
 enum eOperandType
 {
 	INT8,
@@ -17,13 +18,13 @@ typedef struct 		s_operand
 {
 	eOperandType	type;
 	int 			index;
-	std::string 	str;
+	std::string 		str;
 	double 			minLimit;
 	double 			maxLimit;
 
 }					t_operand;
 
-static t_operand	op[] =
+static t_operand		op[] =
 {
 	{INT8, 0, "int8", std::numeric_limits<signed char>::min(), std::numeric_limits<signed char>::max()},
 	{INT16, 1, "int16", std::numeric_limits<short int>::min(), std::numeric_limits<short int>::max()},

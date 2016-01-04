@@ -1,6 +1,7 @@
 #ifndef OPERAND_H
 #define OPERAND_H
 
+# include <sstream>
 # include "IOperand.hpp"
 
 template <typename T>
@@ -12,7 +13,10 @@ class Operand : public IOperand
 		int				_precision;
 		T 				_value;
 
-		Operand&		operator=(const Operand& src){}
+		Operand&		operator=(const Operand& src){
+			//temp
+			return src;
+		}
 		Operand(const Operand&){}
 		Operand(){}
 
@@ -37,32 +41,48 @@ class Operand : public IOperand
 
 		IOperand const * operator+( IOperand const & rhs ) const
 		{
-
+			//temp
+			return &rhs;
 		}
 		
 		IOperand const * operator-( IOperand const & rhs ) const
 		{
-
+			//temp
+			return &rhs;
 		}
 
 		IOperand const * operator*( IOperand const & rhs ) const
 		{
-
+			//temp
+			return &rhs;
 		}
 		
 		IOperand const * operator/( IOperand const & rhs ) const
 		{
-
+			//temp
+			return &rhs;
 		}
 
 		IOperand const * operator%( IOperand const & rhs ) const
 		{
-
+			//temp
+			return &rhs;
 		}
 
 		std::string const & toString( void ) const
 		{
 
+			// A revoir
+			std::string *str = new std::string();
+			std::ostringstream ss;
+
+			if (_type == INT8)
+				ss << (int) _value;
+			else
+				ss << _value;
+
+			str->append(ss.str());
+			return (*str);
 		}
 	
 };

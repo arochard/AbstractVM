@@ -2,7 +2,8 @@
 # define MAIN_HPP
 
 # include <fstream>
-# include "Exception.hpp"
+# include "Parser.hpp"
+# include "Operand.hpp"
 # include "AbstractVM.hpp"
 
 #endif

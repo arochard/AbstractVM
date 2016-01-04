@@ -1,9 +1,9 @@
 # include "main.hpp"
 
-
 int		main(int ac, char **av)
 {
 	AbstractVM		avm;
+	Parser			parser;
 	std::string		str;
 
 	try
@@ -13,22 +13,18 @@ int		main(int ac, char **av)
 			std::ifstream fileName(av[1]);
 
 			while (std::getline(fileName, str))
-			{
-				std::cout << str << std::endl;
-			}
+				avm.executeLine(parser.extract(str));
 		}
 		else if (ac == 1)
 		{
 			while (std::getline(std::cin, str))
-			{
-				std::cout << str << std::endl;
-			}
+				avm.executeLine(parser.extract(str));
 		}
 		else
 			throw Exception("Usage: ./avm 'file' or ./avm");
 	}
-	catch (const Exception &e)
+	catch (const std::exception &e)
 	{
-		std::cerr << "Error: " << e.what() << std::endl;
+		std::cerr << e.what() << std::endl;
 	}
 }
