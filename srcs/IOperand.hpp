@@ -33,6 +33,7 @@ static t_operand		op[] =
 	{DOUBLE, 4, "double", std::numeric_limits<double>::min(), std::numeric_limits<double>::max()}
 };
 
+
 class IOperand
 {
 	public:
