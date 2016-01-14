@@ -39,7 +39,7 @@ void		Parser::checkOperand(std::string str, t_line *line)
 
 	if ((pos = str.find("(")) != std::string::npos)
 	{
-		std::cout << str.substr(0, pos) << std::endl;
+		//std::cout << str.substr(0, pos) << std::endl;
 		while (!find && index < 5)
 		{
 			if (str.substr(0, pos).compare(op[index].str) == 0)

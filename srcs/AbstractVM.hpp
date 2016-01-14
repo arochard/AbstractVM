@@ -93,6 +93,7 @@ class AbstractVM
 		void		mul();
 		void		div();
 		void		mod();
+		void		print();
 
 	
 };

@@ -106,16 +106,10 @@ IOperand const * AbstractVM::createOperand( eOperandType type, std::string const
 
 void		AbstractVM::executeLine(t_line *line)
 {
-	//temporaire
-	std::cout << "Instruct :" << line->instruct << std::endl;
-	std::cout << "Operand type :" << line->typeOperand << std::endl;
-	std::cout << "Value :" << line->value << std::endl;
-	// fin temp
-
 	if (line->instruct == 0)
 		this->push(createOperand(line->typeOperand, (const std::string)line->value));
 	else
-		this->*_arrayOperationPtr[line->instruct];
+		(this->*_arrayOperationPtr[line->instruct])();
 }
 
 void		AbstractVM::push(IOperand const * value)
@@ -146,18 +140,17 @@ void		AbstractVM::dump()
 
 void		AbstractVM::add()
 {
-	IOperand const * v1;
-	IOperand const * v2;
+	
 
-	if (listeOp.size() < 2)
+	if (_stack.size() < 2)
 		throw Exception("Add: Number of values on stack < 2");
 	else
 	{
-		v2 = listeOp.back();
-		listeOp.pop_back();
-		v1 = listeOp.back();
-		listeOp.pop_back();
-		listeOp.push_back(v2 + v1);
+		Operand const * v2 = _stack.back();
+		_stack.pop_back();
+		Operand const * v1  = _stack.back();
+		_stack.pop_back();
+		_stack.push_back(*v2 + *v1);
 	}
 }
 
@@ -177,6 +170,11 @@ void		AbstractVM::div()
 }
 
 void		AbstractVM::mod()
+{
+
+}
+
+void		AbstractVM::print()
 {
 
 }

@@ -1,5 +1,5 @@
-#ifndef OPERAND_H
-#define OPERAND_H
+#ifndef OPERAND_HPP
+#define OPERAND_HPP
 
 # include <sstream>
 # include "IOperand.hpp"
@@ -13,6 +13,8 @@ class Operand : public IOperand
 		int				_precision;
 		T 				_value;
 
+
+
 		Operand&		operator=(const Operand& src){
 			//temp
 			return src;
@@ -20,7 +22,7 @@ class Operand : public IOperand
 		Operand(const Operand&){}
 		Operand(){}
 
-		eOperandType	getHighPrecision(eOperandType op1, eOperandType op2) const
+		int		getHighPrecision(int op1, int op2) const
 		{
 			if (op1 > op2)
 				return op1;
@@ -28,31 +30,7 @@ class Operand : public IOperand
 				return op2;
 		}
 
-		virtual IOperand  * 	createOperand(eOperandType type, double value)
-		{
-			IOperand	*data = NULL;
-
-			switch (type)
-			{
-				case 0:
-					data = new Operand<char>(type, value);
-					break;
-				case 1:
-					data = new Operand<short int>(type, value);
-					break;
-				case 2:
-					data = new Operand<int>(type, value);
-					break;
-				case 3:
-					data = new Operand<float>(type, value);
-					break;
-				case 4:
-					data = new Operand<double>(type, value);
-					break;
-			}
-
-			return data;
-		}
+		
 
 
 	public:
@@ -62,27 +40,27 @@ class Operand : public IOperand
 
 		}
 
-		virtual ~Operand(){}
+		virtual 	~Operand(){}
 
-		T 				getValue() const
+		T 			getValue() const
 		{
 			return this->_value;
 		}
 
 		
-		virtual int 			getPrecision( void ) const
+		int 			getPrecision( void ) const
 		{
 			return this->_precision;
 		}
 		
-		virtual eOperandType 	getType( void ) const
+		eOperandType 		getType( void ) const
 		{
 			return this->_type;
 		}
 
-		virtual IOperand const * operator+( IOperand const & rhs ) const
+		IOperand const * operator+( IOperand const & rhs ) const
 		{
-			int 			precison;
+			/*int 			precison;
 			eOperandType	type;
 			double 			result;
 
@@ -90,34 +68,37 @@ class Operand : public IOperand
 			type = op[precison].type;
 			result = this->_value + rhs.getValue();
 
-			return (createOperand(type, result));
-		}
-		
-		virtual IOperand const * operator-( IOperand const & rhs ) const
-		{
-			//temp
-			return &rhs;
-		}
+			//return (createOperand(type, result));*/
 
-		virtual IOperand const * operator*( IOperand const & rhs ) const
-		{
 			//temp
 			return &rhs;
 		}
 		
-		virtual IOperand const * operator/( IOperand const & rhs ) const
+		IOperand const * operator-( IOperand const & rhs ) const
 		{
 			//temp
 			return &rhs;
 		}
 
-		virtual IOperand const * operator%( IOperand const & rhs ) const
+		IOperand const * operator*( IOperand const & rhs ) const
+		{
+			//temp
+			return &rhs;
+		}
+		
+		IOperand const * operator/( IOperand const & rhs ) const
 		{
 			//temp
 			return &rhs;
 		}
 
-		virtual std::string const & toString( void ) const
+		IOperand const * operator%( IOperand const & rhs ) const
+		{
+			//temp
+			return &rhs;
+		}
+
+		std::string const & toString( void ) const
 		{
 
 			// A revoir
