@@ -2,7 +2,10 @@
 #define OPERAND_HPP
 
 # include <sstream>
+# include <cstdint>
 # include "IOperand.hpp"
+# include "OperandFactory.hpp"
+
 
 template <typename T>
 class Operand : public IOperand
@@ -60,18 +63,16 @@ class Operand : public IOperand
 
 		IOperand const * operator+( IOperand const & rhs ) const
 		{
-			/*int 			precison;
-			eOperandType	type;
-			double 			result;
+			int 			precison;
+			eOperandType		type;
+			std::ostringstream	result;
+			OperandFactory		*ope = new OperandFactory();
 
 			precison = this->getHighPrecision(this->_precision, rhs.getPrecision());
 			type = op[precison].type;
-			result = this->_value + rhs.getValue();
+			result << (this->toString() + rhs.toString());
 
-			//return (createOperand(type, result));*/
-
-			//temp
-			return &rhs;
+			return (OperandFactory::getInstance()->createOperand(type, result.str()));
 		}
 		
 		IOperand const * operator-( IOperand const & rhs ) const
@@ -105,9 +106,9 @@ class Operand : public IOperand
 			std::string *str = new std::string();
 			std::ostringstream ss;
 
-			if (_type == INT8)
+			/*if (_type == INT8)
 				ss << (int) _value;
-			else
+			else*/
 				ss << _value;
 
 			str->append(ss.str());

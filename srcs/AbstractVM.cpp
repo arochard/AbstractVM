@@ -1,13 +1,9 @@
-# include "AbstractVM.hpp"
+# include "../includes/AbstractVM.hpp"
+# include "../includes/OperandFactory.hpp"
+# include "../includes/Exception.hpp"
 
 AbstractVM::AbstractVM()
 {
-	this->_arrayPtr[0] = &AbstractVM::createInt8;
-	this->_arrayPtr[1] = &AbstractVM::createInt16;
-	this->_arrayPtr[2] = &AbstractVM::createInt32;
-	this->_arrayPtr[3] = &AbstractVM::createFloat;
-	this->_arrayPtr[4] = &AbstractVM::createDouble;
-
 	this->_arrayOperationPtr[1] = &AbstractVM::pop;
 	this->_arrayOperationPtr[3] = &AbstractVM::dump;
 	this->_arrayOperationPtr[4] = &AbstractVM::add;
@@ -24,90 +20,11 @@ AbstractVM::~AbstractVM()
 
 }
 
-IOperand const * AbstractVM::createInt8( std::string const & value ) const
-{
-	eOperandType	type;
-	char			tmp;
-
-	type = INT8;
-	tmp = std::stoi(value);
-
-	Operand<char> const *	data = new Operand<char>(type, tmp);
-
-	return data;
-}
-
-IOperand const * AbstractVM::createInt16( std::string const & value ) const
-{
-	eOperandType	type;
-	short int			tmp;
-
-	type = INT16;
-	tmp = std::stoi(value);
-
-	Operand<short int> const *	data = new Operand<short int>(type, tmp);
-
-	return data;
-}
-
-IOperand const * AbstractVM::createInt32( std::string const & value ) const
-{
-	eOperandType	type;
-	int 			tmp;
-
-	type = INT32;
-	tmp = std::stoi(value);
-
-	Operand<int> const *	data = new Operand<int>(type, tmp);
-
-	return data;
-}
-
-IOperand const * AbstractVM::createFloat( std::string const & value ) const
-{
-	eOperandType	type;
-	float 			tmp;
-
-	type = FLOAT;
-	tmp = std::stof(value);
-
-	Operand<float> const *	data = new Operand<float>(type, tmp);
-
-	return data;	
-}
-
-IOperand const * AbstractVM::createDouble( std::string const & value ) const
-{
-	eOperandType	type;
-	double 			tmp;
-
-	type = DOUBLE;
-	tmp = std::stod(value);
-
-	Operand<double> const *	data = new Operand<double>(type, tmp);
-
-	return data;
-}
-
-
-IOperand const * AbstractVM::createOperand( eOperandType type, std::string const & value ) const
-{
-	int 		i;
-
-	i = 0;
-	while (i <= 5 && op[i].type != type)
-		i++;
-
-	if (i == 5)
-		throw Exception("Intern error");
-
-	return (this->*_arrayPtr[i])(value);
-}
 
 void		AbstractVM::executeLine(t_line *line)
 {
 	if (line->instruct == 0)
-		this->push(createOperand(line->typeOperand, (const std::string)line->value));
+		this->push(OperandFactory::getInstance()->createOperand(line->typeOperand, (const std::string)line->value));
 	else
 		(this->*_arrayOperationPtr[line->instruct])();
 }
@@ -146,9 +63,9 @@ void		AbstractVM::add()
 		throw Exception("Add: Number of values on stack < 2");
 	else
 	{
-		Operand const * v2 = _stack.back();
+		IOperand const * v2 = _stack.back();
 		_stack.pop_back();
-		Operand const * v1  = _stack.back();
+		IOperand const * v1  = _stack.back();
 		_stack.pop_back();
 		_stack.push_back(*v2 + *v1);
 	}

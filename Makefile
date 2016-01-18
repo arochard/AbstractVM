@@ -17,7 +17,7 @@ $(NAME): $(O_FILES)
 
 $(O_DIR)/%.o: $(C_DIR)/%.s
 	@mkdir -p $(O_DIRS) $(O_DIR)
-	@nasm $(FLAGS) -o $@ $<
+	clang++ $(FLAGS) -o $@ $<
 
 clean:
 	@rm $(O_FILES)

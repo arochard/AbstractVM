@@ -1,4 +1,8 @@
-# include "main.hpp"
+# include <fstream>
+# include <queue>
+# include "../includes/AbstractVM.hpp"
+# include "../includes/Parser.hpp"
+# include "../includes/Exception.hpp"
 
 int		main(int ac, char **av)
 {

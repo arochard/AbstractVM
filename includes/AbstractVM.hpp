@@ -1,10 +1,9 @@
 #ifndef ABSTRACTVM_HPP
 #define ABSTRACTVM_HPP
 
-# include "Operand.hpp"
-# include "Exception.hpp"
 # include <list>
 # include <iostream>
+# include "IOperand.hpp"
 
 enum eInstructType
 {
@@ -54,23 +53,17 @@ typedef	struct 		s_line
 
 typedef std::list<IOperand const*> listeOp;
 
+
+
 class AbstractVM
 {
 
 	private:
-		typedef IOperand const * (AbstractVM::*GenericCreateOp)(std::string const & value) const;
 		typedef void	(AbstractVM::*GenericOperation)();
 		
 		listeOp				_stack;
-		GenericCreateOp		_arrayPtr[5];
+		
 		GenericOperation 	_arrayOperationPtr[12];
-
-
-		IOperand const * createInt8( std::string const & value ) const;
-		IOperand const * createInt16( std::string const & value ) const;
-		IOperand const * createInt32( std::string const & value ) const;
-		IOperand const * createFloat( std::string const & value ) const;
-		IOperand const * createDouble( std::string const & value ) const;
 
 		AbstractVM&		operator=(const AbstractVM& src);
 		AbstractVM(const AbstractVM&);
@@ -80,8 +73,6 @@ class AbstractVM
 	public:
 		AbstractVM();
 		~AbstractVM();
-
-		IOperand const * createOperand( eOperandType type, std::string const & value ) const;
 
 		void		executeLine(t_line*);
 
