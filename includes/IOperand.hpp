@@ -14,21 +14,21 @@ enum eOperandType
 	DOUBLE
 };
 
-typedef struct 		s_operand
+typedef struct 			s_operand
 {
-	eOperandType	type;
+	eOperandType		type;
 	int 			index;
 	std::string 		str;
 	double 			minLimit;
 	double 			maxLimit;
 
-}					t_operand;
+}				t_operand;
 
 static t_operand		op[] =
 {
-	{INT8, 0, "int8", std::numeric_limits<signed char>::min(), std::numeric_limits<signed char>::max()},
-	{INT16, 1, "int16", std::numeric_limits<short int>::min(), std::numeric_limits<short int>::max()},
-	{INT32, 2, "int32", std::numeric_limits<int>::min(), std::numeric_limits<int>::max()},
+	{INT8, 0, "int8", std::numeric_limits<int8_t>::min(), std::numeric_limits<int8_t>::max()},
+	{INT16, 1, "int16", std::numeric_limits<int16_t>::min(), std::numeric_limits<int16_t>::max()},
+	{INT32, 2, "int32", std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max()},
 	{FLOAT, 3, "float", std::numeric_limits<float>::min(), std::numeric_limits<float>::max()},
 	{DOUBLE, 4, "double", std::numeric_limits<double>::min(), std::numeric_limits<double>::max()}
 };

@@ -25,13 +25,30 @@ void		AbstractVM::executeLine(t_line *line)
 {
 	if (line->instruct == 0)
 		this->push(OperandFactory::getInstance()->createOperand(line->typeOperand, (const std::string)line->value));
-	else
+	else if (line->instruct == 2)
+		this->assert(OperandFactory::getInstance()->createOperand(line->typeOperand, (const std::string)line->value));
+	else if (line->instruct < 10)
 		(this->*_arrayOperationPtr[line->instruct])();
 }
 
 void		AbstractVM::push(IOperand const * value)
 {
 	this->_stack.push_back(value);
+}
+
+void		AbstractVM::assert(IOperand const * value)
+{
+	if (this->_stack.empty())
+		throw Exception("Error : Assert on a empty stack");
+	else
+	{
+		IOperand const *	tmp = this->_stack.back();
+		double 			assertValue = std::stod(value->toString());
+		double			topStackValue = std::stod(tmp->toString());
+
+		if ((assertValue != topStackValue) || (value->getPrecision() != tmp->getPrecision()))
+			throw Exception("Assert: Not equal");
+	}
 }
 
 void		AbstractVM::pop()
@@ -46,52 +63,102 @@ void		AbstractVM::pop()
 
 void		AbstractVM::dump()
 {
+	//debug
+	//std::cout << " Size :  " << _stack.size() << std::endl;
 	if (this->_stack.empty())
 		throw Exception("Error : Dump on a empty stack");
 	else
 	{
-		for (listeOp::iterator it = this->_stack.end(); it != this->_stack.begin(); it--)
-			std::cout << *it << std::endl;
+		for (listeOp::reverse_iterator rit = this->_stack.rbegin(); rit != this->_stack.rend(); ++rit)
+			std::cout << (*rit)->toString() << std::endl;
 	}
+	//std::cout << " End dump "<< std::endl;
 }
 
 void		AbstractVM::add()
 {
-	
-
-	if (_stack.size() < 2)
+	if (this->_stack.size() < 2)
 		throw Exception("Add: Number of values on stack < 2");
 	else
 	{
-		IOperand const * v2 = _stack.back();
-		_stack.pop_back();
-		IOperand const * v1  = _stack.back();
-		_stack.pop_back();
-		_stack.push_back(*v2 + *v1);
+		IOperand const * v2 = this->_stack.back();
+		this->_stack.pop_back();
+		IOperand const * v1  = this->_stack.back();
+		this->_stack.pop_back();
+		this->push(*v2 + *v1);
 	}
 }
 
 void		AbstractVM::sub()
 {
-
+	if (this->_stack.size() < 2)
+		throw Exception("Sub: Number of values on stack < 2");
+	else
+	{
+		IOperand const * v2 = this->_stack.back();
+		this->_stack.pop_back();
+		IOperand const * v1  = this->_stack.back();
+		this->_stack.pop_back();
+		this->push(*v2 - *v1);
+	}
 }
 
 void		AbstractVM::mul()
 {
-
+	if (this->_stack.size() < 2)
+		throw Exception("Mul: Number of values on stack < 2");
+	else
+	{
+		IOperand const * v2 = this->_stack.back();
+		this->_stack.pop_back();
+		IOperand const * v1  = this->_stack.back();
+		this->_stack.pop_back();
+		this->push((*v2) * (*v1));
+	}
 }
 
 void		AbstractVM::div()
 {
-
+	if (this->_stack.size() < 2)
+		throw Exception("Div: Number of values on stack < 2");
+	else
+	{
+		IOperand const * v2 = this->_stack.back();
+		this->_stack.pop_back();
+		IOperand const * v1  = this->_stack.back();
+		this->_stack.pop_back();
+		this->push(*v2 / *v1);
+	}
 }
 
 void		AbstractVM::mod()
 {
-
+	if (this->_stack.size() < 2)
+		throw Exception("Mod: Number of values on stack < 2");
+	else
+	{
+		IOperand const * v2 = this->_stack.back();
+		this->_stack.pop_back();
+		IOperand const * v1  = this->_stack.back();
+		this->_stack.pop_back();
+		this->push(*v2 % *v1);
+	}
 }
 
 void		AbstractVM::print()
 {
+	if (this->_stack.empty())
+		throw Exception("Print: Number of values on stack = 0");
+	else
+	{
+		IOperand const *	tmp = this->_stack.back();
 
+		if (tmp->getPrecision() != 0)
+			throw Exception("Print: Type must be 'int8'");
+		else
+		{
+			char 		c = std::stoi(tmp->toString());
+			std::cout << c << std::endl;
+		}
+	}
 }

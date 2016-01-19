@@ -38,7 +38,7 @@ IOperand const * OperandFactory::createOperand( eOperandType type, std::string c
 		i++;
 
 	if (i == 5)
-		throw Exception("Intern error");
+		throw Exception("Intern error or type does not exist");
 
 	return (this->*_arrayPtr[i])(value);
 }

@@ -3,8 +3,11 @@
 
 # include <sstream>
 # include <cstdint>
+# include <cmath>
+# include <iostream>
 # include "IOperand.hpp"
 # include "OperandFactory.hpp"
+# include "Exception.hpp"
 
 
 template <typename T>
@@ -22,6 +25,7 @@ class Operand : public IOperand
 			//temp
 			return src;
 		}
+		
 		Operand(const Operand&){}
 		Operand(){}
 
@@ -33,14 +37,12 @@ class Operand : public IOperand
 				return op2;
 		}
 
-		
-
-
 	public:
 		
 		Operand<T>(eOperandType type, T& value): _type(type), _value(value)
 		{
-
+			int 	precision = type;
+			this->_precision = precision;
 		}
 
 		virtual 	~Operand(){}
@@ -66,55 +68,91 @@ class Operand : public IOperand
 			int 			precison;
 			eOperandType		type;
 			std::ostringstream	result;
-			OperandFactory		*ope = new OperandFactory();
+			double			tmpRes;
 
+			tmpRes = (std::stod(this->toString())) + (std::stod(rhs.toString()));
 			precison = this->getHighPrecision(this->_precision, rhs.getPrecision());
 			type = op[precison].type;
-			result << (this->toString() + rhs.toString());
+			result << tmpRes;
 
 			return (OperandFactory::getInstance()->createOperand(type, result.str()));
 		}
 		
 		IOperand const * operator-( IOperand const & rhs ) const
 		{
-			//temp
-			return &rhs;
+			int 			precison;
+			eOperandType		type;
+			std::ostringstream	result;
+			double			tmpRes;
+
+			tmpRes = (std::stod(this->toString())) - (std::stod(rhs.toString()));
+			precison = this->getHighPrecision(this->_precision, rhs.getPrecision());
+			type = op[precison].type;
+			result << tmpRes;
+
+			return (OperandFactory::getInstance()->createOperand(type, result.str()));
 		}
 
-		IOperand const * operator*( IOperand const & rhs ) const
-		{
-			//temp
-			return &rhs;
-		}
-		
 		IOperand const * operator/( IOperand const & rhs ) const
 		{
-			//temp
-			return &rhs;
+			int 			precison;
+			eOperandType		type;
+			std::ostringstream	result;
+			double			leftValue = std::stod(this->toString());
+			double			rightValue = std::stod(rhs.toString());
+
+			if (leftValue == 0 || rightValue == 0)
+				throw Exception("Division by 0");
+
+			precison = this->getHighPrecision(this->_precision, rhs.getPrecision());
+			type = op[precison].type;
+			result << (leftValue / rightValue);
+
+			return (OperandFactory::getInstance()->createOperand(type, result.str()));
+		}
+		
+		IOperand const * operator*( IOperand const & rhs ) const
+		{
+			int 			precison;
+			eOperandType		type;
+			std::ostringstream	result;
+			double			tmpRes;
+
+			tmpRes = (std::stod(this->toString())) * (std::stod(rhs.toString()));
+			precison = this->getHighPrecision(this->_precision, rhs.getPrecision());
+			type = op[precison].type;
+			result << tmpRes;
+
+			return (OperandFactory::getInstance()->createOperand(type, result.str()));
 		}
 
 		IOperand const * operator%( IOperand const & rhs ) const
 		{
-			//temp
-			return &rhs;
+			int 			precison;
+			eOperandType		type;
+			std::ostringstream	result;
+			double			leftValue = std::stod(this->toString());
+			double			rightValue = std::stod(rhs.toString());
+
+			if (leftValue == 0 || rightValue == 0)
+				throw Exception("Modulo by 0");
+
+			precison = this->getHighPrecision(this->_precision, rhs.getPrecision());
+			type = op[precison].type;
+			result << fmod(leftValue, rightValue);
+
+			return (OperandFactory::getInstance()->createOperand(type, result.str()));
 		}
 
 		std::string const & toString( void ) const
 		{
-
-			// A revoir
 			std::string *str = new std::string();
 			std::ostringstream ss;
 
-			/*if (_type == INT8)
-				ss << (int) _value;
-			else*/
-				ss << _value;
-
+			ss << _value;
 			str->append(ss.str());
 			return (*str);
 		}
-	
 };
 
 #endif

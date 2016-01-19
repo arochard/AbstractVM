@@ -77,6 +77,7 @@ class AbstractVM
 		void		executeLine(t_line*);
 
 		void		push(IOperand const *);
+		void		assert(IOperand const *);
 		void		pop();
 		void		dump();
 		void		add();

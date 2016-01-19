@@ -50,12 +50,7 @@ int		main(int ac, char **av)
 
 	while (!listInstruct.empty())
 	{
-		std::cout << "Instruct: " << listInstruct.front()->instruct << std::endl;
-		std::cout << "Operand:" << listInstruct.front()->typeOperand << std::endl;
-		std::cout << "Value:" << listInstruct.front()->value << std::endl << std::endl;
-
 		avm.executeLine(listInstruct.front());
-
 		listInstruct.pop();
 	}
 }
