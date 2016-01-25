@@ -149,7 +149,10 @@ class Operand : public IOperand
 			std::string *str = new std::string();
 			std::ostringstream ss;
 
-			ss << _value;
+			if (this->_type == INT8)
+				ss << (int)this->_value;
+			else
+				ss << this->_value;
 			str->append(ss.str());
 			return (*str);
 		}

@@ -1,27 +1,24 @@
-NAME = AbstractVM
+NAME = avm
 
-C_DIR = srcs
-O_DIR = o
-FLAGS = -Wall -Wextra -Werror -std=c++11
+CC = clang++
+FLAGS = -Wall -Wextra -Werror --std=c++11
 
-C_FILES = $(shell find $(C_DIR) -type f -print | grep "\.s")
-C_DIRS = $(shell find $(C_DIR) -type d -print)
+CPP_DIR = srcs
 
-O_DIRS = $(C_DIRS:$(C_DIR)/%=$(O_DIR)/%)
-O_FILES = $(C_FILES:$(C_DIR)/%.s=$(O_DIR)/%.o)
+SRC := $(wildcard $(CPP_DIR)/*.cpp)
+OBJ= $(SRC:.cpp=.o)
 
 all: $(NAME)
 
-$(NAME): $(O_FILES)
+$(NAME):$(OBJ)
+	@$(CC) -o $@ $^
+	@echo "\033[0;32m$(NAME) : Compilation successful !! \033[0;32m"
 
-
-$(O_DIR)/%.o: $(C_DIR)/%.s
-	@mkdir -p $(O_DIRS) $(O_DIR)
-	clang++ $(FLAGS) -o $@ $<
+%.o: %.cpp
+	@$(CC) -o $@ -c $< $(FLAGS)
 
 clean:
-	@rm $(O_FILES)
-	@rmdir $(O_DIRS) $(O_DIR)
+	@rm $(OBJ)
 
 fclean: clean
 	@rm $(NAME)

@@ -12,6 +12,7 @@ class Parser
 		Parser();
 		~Parser();
 
+		void 		epurComments(std::string *str, bool isStandInput);
 		t_line 		*extract(std::string str);	
 };
 

@@ -10,7 +10,6 @@ int		main(int ac, char **av)
 	Parser			parser;
 	std::string		str;
 	std::queue<t_line*>	listInstruct;
-	bool			eof = false;
 
 	try
 	{
@@ -18,39 +17,45 @@ int		main(int ac, char **av)
 		{
 			std::ifstream fileName(av[1]);
 
-			while (std::getline(fileName, str) && !eof)
+			while (std::getline(fileName, str))
 			{
+				parser.epurComments(&str, false);
 				if (!str.empty())
 				{
 					listInstruct.push(parser.extract(str));
 					if (listInstruct.back()->instruct == EXIT)
-						eof = true;
+						break;
 				}
 			}
+			if (listInstruct.empty() || (listInstruct.back()->instruct != EXIT))
+				throw Exception("The program must have an EXIT instruction");
 		}
 		else if (ac == 1)
 		{
-			while (std::getline(std::cin, str) && !eof)
+			while (std::getline(std::cin, str))
 			{
+				parser.epurComments(&str, true);
 				if (!str.empty())
 				{
 					listInstruct.push(parser.extract(str));
 					if (listInstruct.back()->instruct == DSEM)
-						eof = true;
+						break;
 				}
 			}
 		}
 		else
 			throw Exception("Usage: ./avm 'file' or ./avm");
+
+		while (!listInstruct.empty())
+		{
+			avm.executeLine(listInstruct.front());
+			listInstruct.pop();
+		}
 	}
 	catch (const std::exception &e)
 	{
 		std::cerr << e.what() << std::endl;
 	}
 
-	while (!listInstruct.empty())
-	{
-		avm.executeLine(listInstruct.front());
-		listInstruct.pop();
-	}
+	return 0;
 }

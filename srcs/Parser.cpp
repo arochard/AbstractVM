@@ -64,6 +64,35 @@ void		Parser::checkOperand(std::string str, t_line *line)
 		throw Exception("Syntax error on operand value");	
 }
 
+void		Parser::epurComments(std::string *str, bool isStandInput)
+{
+	std::string 	del = ";";
+	size_t		pos;
+
+	pos = (*str).find(del);
+
+	if (pos != std::string::npos)
+	{
+		//DEBUG
+		//std::cout << *str->end() << std::endl;
+		if (isStandInput)
+		{
+			if ((*str)[pos + 1] != ';')
+			{
+				//DEBUG
+				//std::cout << "pos: " << (*str)[pos + 1] << std::endl;	
+				(*str).erase(pos, (*str).size());
+			}
+			else
+				(*str).erase(pos + 2, (*str).size());
+		}
+		else
+			(*str).erase(pos, (*str).size());
+	}
+	//DEBUG
+	//std::cout << "End epur : " << *str << std::endl;
+}
+
 t_line 		*Parser::extract(std::string str)
 {
 	t_line 		*lineExtract = new t_line;
