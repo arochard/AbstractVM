@@ -68,7 +68,7 @@ void		AbstractVM::dump()
 	else
 	{
 		for (listeOp::reverse_iterator rit = this->_stack.rbegin(); rit != this->_stack.rend(); ++rit)
-			std::cout << (*rit)->toString() << std::endl;
+			std::cout << (*rit)->toString() << " "  << (*rit)->getType() << std::endl;
 	}
 }
 
@@ -92,9 +92,9 @@ void		AbstractVM::sub()
 		throw Exception("Sub: Number of values on stack < 2");
 	else
 	{
-		IOperand const * v2 = this->_stack.back();
+		IOperand const * v1 = this->_stack.back();
 		this->_stack.pop_back();
-		IOperand const * v1  = this->_stack.back();
+		IOperand const * v2  = this->_stack.back();
 		this->_stack.pop_back();
 		this->push(*v2 - *v1);
 	}
@@ -106,9 +106,9 @@ void		AbstractVM::mul()
 		throw Exception("Mul: Number of values on stack < 2");
 	else
 	{
-		IOperand const * v2 = this->_stack.back();
+		IOperand const * v1 = this->_stack.back();
 		this->_stack.pop_back();
-		IOperand const * v1  = this->_stack.back();
+		IOperand const * v2  = this->_stack.back();
 		this->_stack.pop_back();
 		this->push((*v2) * (*v1));
 	}
@@ -120,9 +120,9 @@ void		AbstractVM::div()
 		throw Exception("Div: Number of values on stack < 2");
 	else
 	{
-		IOperand const * v2 = this->_stack.back();
+		IOperand const * v1 = this->_stack.back();
 		this->_stack.pop_back();
-		IOperand const * v1  = this->_stack.back();
+		IOperand const * v2  = this->_stack.back();
 		this->_stack.pop_back();
 		this->push(*v2 / *v1);
 	}
@@ -134,9 +134,9 @@ void		AbstractVM::mod()
 		throw Exception("Mod: Number of values on stack < 2");
 	else
 	{
-		IOperand const * v2 = this->_stack.back();
+		IOperand const * v1 = this->_stack.back();
 		this->_stack.pop_back();
-		IOperand const * v1  = this->_stack.back();
+		IOperand const * v2  = this->_stack.back();
 		this->_stack.pop_back();
 		this->push(*v2 % *v1);
 	}
