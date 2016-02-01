@@ -1,6 +1,6 @@
 #include "../includes/OperandFactory.hpp"
 #include "../includes/Operand.hpp"
-# include "../includes/Exception.hpp"
+#include "../includes/Exception.hpp"
 
 OperandFactory* 	OperandFactory::_instance = NULL;
 
@@ -18,13 +18,26 @@ OperandFactory::~OperandFactory()
 
 }
 
+bool				OperandFactory::checkLimitOp(eOperandType type, std::string value) const
+{
+	double 			tmp;
+
+	tmp = std::stod(value);
+
+	if (op[type].minLimit > tmp)
+		throw Exception("Error : Underflow");
+	else if (op[type].maxLimit < tmp)
+		throw Exception("Error : Overflow");
+	
+	return true;
+}
 
 // Singleton
 OperandFactory  * OperandFactory::getInstance()
 {
 	if (!_instance)
 		_instance = new OperandFactory(); 
-     	return _instance;
+     return _instance;
 }
 
 
@@ -54,9 +67,13 @@ IOperand const * OperandFactory::createInt8( std::string const & value ) const
 	type = INT8;
 	tmp = std::stoi(value);
 
-	Operand<int8_t> const *	data = new Operand<int8_t>(type, tmp);
-
-	return data;
+	if (checkLimitOp(type, value))
+	{
+		Operand<int8_t> const *	data = new Operand<int8_t>(type, tmp);
+		return data;
+	}
+	
+	return NULL;
 }
 
 IOperand const * OperandFactory::createInt16( std::string const & value ) const
@@ -67,9 +84,13 @@ IOperand const * OperandFactory::createInt16( std::string const & value ) const
 	type = INT16;
 	tmp = std::stoi(value);
 
-	Operand<int16_t> const *	data = new Operand<int16_t>(type, tmp);
+	if (checkLimitOp(type, value))
+	{
+		Operand<int16_t> const *	data = new Operand<int16_t>(type, tmp);
+		return data;
+	}
 
-	return data;
+	return NULL;
 }
 
 IOperand const * OperandFactory::createInt32( std::string const & value ) const
@@ -80,9 +101,13 @@ IOperand const * OperandFactory::createInt32( std::string const & value ) const
 	type = INT32;
 	tmp = std::stoi(value);
 
-	Operand<int32_t> const *	data = new Operand<int32_t>(type, tmp);
+	if (checkLimitOp(type, value))
+	{
+		Operand<int32_t> const *	data = new Operand<int32_t>(type, tmp);
+		return data;
+	}
 
-	return data;
+	return NULL;
 }
 
 IOperand const * OperandFactory::createFloat( std::string const & value ) const
@@ -93,9 +118,13 @@ IOperand const * OperandFactory::createFloat( std::string const & value ) const
 	type = FLOAT;
 	tmp = std::stof(value);
 
-	Operand<float> const *	data = new Operand<float>(type, tmp);
+	if (checkLimitOp(type, value))
+	{
+		Operand<float> const *	data = new Operand<float>(type, tmp);
+		return data;
+	}
 
-	return data;	
+	return NULL;
 }
 
 IOperand const * OperandFactory::createDouble( std::string const & value ) const
@@ -106,7 +135,11 @@ IOperand const * OperandFactory::createDouble( std::string const & value ) const
 	type = DOUBLE;
 	tmp = std::stod(value);
 
-	Operand<double> const *	data = new Operand<double>(type, tmp);
+	if (checkLimitOp(type, value))
+	{
+		Operand<double> const *	data = new Operand<double>(type, tmp);
+		return data;
+	}
 
-	return data;
+	return NULL;
 }

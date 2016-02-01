@@ -17,6 +17,8 @@ class OperandFactory
 		OperandFactory(const OperandFactory&);
 
 
+		bool			checkLimitOp(eOperandType type, std::string value) const;
+
 		IOperand const * createInt8( std::string const & value ) const;
 		IOperand const * createInt16( std::string const & value ) const;
 		IOperand const * createInt32( std::string const & value ) const;

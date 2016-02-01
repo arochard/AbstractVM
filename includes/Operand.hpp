@@ -5,6 +5,7 @@
 # include <cstdint>
 # include <cmath>
 # include <iostream>
+# include <iomanip>
 # include "IOperand.hpp"
 # include "OperandFactory.hpp"
 # include "Exception.hpp"
@@ -21,8 +22,11 @@ class Operand : public IOperand
 
 
 
-		Operand&		operator=(const Operand& src){
-			//temp
+		Operand&		operator=(const Operand& src)
+		{
+			this->_value = src.getValue();
+			this->_precision = src.getPrecision();
+			this->_type = src.getType();
 			return src;
 		}
 		
@@ -65,10 +69,10 @@ class Operand : public IOperand
 
 		IOperand const * operator+( IOperand const & rhs ) const
 		{
-			int 			precison;
+			int 				precison;
 			eOperandType		type;
 			std::ostringstream	result;
-			double			tmpRes;
+			double				tmpRes;
 
 			tmpRes = (std::stod(this->toString())) + (std::stod(rhs.toString()));
 			precison = this->getHighPrecision(this->_precision, rhs.getPrecision());

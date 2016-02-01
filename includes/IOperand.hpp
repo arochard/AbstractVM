@@ -17,12 +17,12 @@ enum eOperandType
 typedef struct 			s_operand
 {
 	eOperandType		type;
-	int 			index;
+	int 				index;
 	std::string 		str;
-	double 			minLimit;
-	double 			maxLimit;
+	double 				minLimit;
+	double 				maxLimit;
 
-}				t_operand;
+}						t_operand;
 
 static t_operand		op[] =
 {

@@ -1,3 +1,4 @@
+# include <iomanip>
 # include "../includes/AbstractVM.hpp"
 # include "../includes/OperandFactory.hpp"
 # include "../includes/Exception.hpp"
@@ -12,7 +13,6 @@ AbstractVM::AbstractVM()
 	this->_arrayOperationPtr[7] = &AbstractVM::div;
 	this->_arrayOperationPtr[8] = &AbstractVM::mod;
 	this->_arrayOperationPtr[9] = &AbstractVM::print;
-	//a voir avec exit et autre
 }
 
 AbstractVM::~AbstractVM()
@@ -63,8 +63,6 @@ void		AbstractVM::pop()
 
 void		AbstractVM::dump()
 {
-	//debug
-	//std::cout << " Size :  " << _stack.size() << std::endl;
 	if (this->_stack.empty())
 		throw Exception("Error : Dump on a empty stack");
 	else
@@ -72,7 +70,6 @@ void		AbstractVM::dump()
 		for (listeOp::reverse_iterator rit = this->_stack.rbegin(); rit != this->_stack.rend(); ++rit)
 			std::cout << (*rit)->toString() << std::endl;
 	}
-	//std::cout << " End dump "<< std::endl;
 }
 
 void		AbstractVM::add()
