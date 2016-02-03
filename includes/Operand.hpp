@@ -89,11 +89,20 @@ class Operand : public IOperand
 			std::ostringstream	result;
 			double			tmpRes;
 
+			//DEBUG
+			std::cout << "This : " << std::stod(this->toString()) << std::endl;
+			std::cout << "Rhs : " << std::stod(rhs.toString()) << std::endl;
+			/**/
 			tmpRes = (std::stod(this->toString())) - (std::stod(rhs.toString()));
 			precison = this->getHighPrecision(this->_precision, rhs.getPrecision());
 			type = op[precison].type;
-			result << tmpRes;
-
+			//DEBUG
+			std::cout << "TmpResult : " << tmpRes << std::endl;
+			/**/
+			result << std::setprecision(op[this->_type].precision) << tmpRes;
+			//DEBUG
+			//std::cout << "Result : " << result.str() << std::endl;
+			/**/
 			return (OperandFactory::getInstance()->createOperand(type, result.str()));
 		}
 
@@ -156,8 +165,10 @@ class Operand : public IOperand
 			if (this->_type == INT8)
 				ss << (int)this->_value;
 			else
-				ss << this->_value;
+				ss << std::setprecision(op[this->_type].precision) << this->_value;
+			//std::cout << "SS : " << ss.str() << std::endl;
 			str->append(ss.str());
+			//std::cout << "Str : " << *str << std::endl;
 			return (*str);
 		}
 };

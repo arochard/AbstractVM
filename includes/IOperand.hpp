@@ -21,16 +21,17 @@ typedef struct 			s_operand
 	std::string 		str;
 	double 				minLimit;
 	double 				maxLimit;
+	int 				precision;
 
 }						t_operand;
 
 static t_operand		op[] =
 {
-	{INT8, 0, "int8", std::numeric_limits<int8_t>::min(), std::numeric_limits<int8_t>::max()},
-	{INT16, 1, "int16", std::numeric_limits<int16_t>::min(), std::numeric_limits<int16_t>::max()},
-	{INT32, 2, "int32", std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max()},
-	{FLOAT, 3, "float", std::numeric_limits<float>::min(), std::numeric_limits<float>::max()},
-	{DOUBLE, 4, "double", std::numeric_limits<double>::min(), std::numeric_limits<double>::max()}
+	{INT8, 0, "int8", std::numeric_limits<int8_t>::min(), std::numeric_limits<int8_t>::max(), std::numeric_limits<int8_t>::digits + 2},
+	{INT16, 1, "int16", std::numeric_limits<int16_t>::min(), std::numeric_limits<int16_t>::max(), std::numeric_limits<int16_t>::digits + 2},
+	{INT32, 2, "int32", std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max(), std::numeric_limits<int32_t>::digits + 2},
+	{FLOAT, 3, "float", -std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max_digits10 + 2},
+	{DOUBLE, 4, "double", -std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), std::numeric_limits<double>::max_digits10 + 2}
 };
 
 

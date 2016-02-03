@@ -28,7 +28,7 @@ bool				OperandFactory::checkLimitOp(eOperandType type, std::string value) const
 		throw Exception("Error : Underflow");
 	else if (op[type].maxLimit < tmp)
 		throw Exception("Error : Overflow");
-	
+
 	return true;
 }
 
