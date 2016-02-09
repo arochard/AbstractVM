@@ -19,6 +19,7 @@ class Operand : public IOperand
 		eOperandType	_type;
 		int				_precision;
 		T 				_value;
+		std::string 			_string;
 
 
 
@@ -27,7 +28,7 @@ class Operand : public IOperand
 			this->_value = src.getValue();
 			this->_precision = src.getPrecision();
 			this->_type = src.getType();
-			return src;
+			return this;
 		}
 		
 		Operand(const Operand&){}
@@ -47,6 +48,16 @@ class Operand : public IOperand
 		{
 			int 	precision = type;
 			this->_precision = precision;
+
+			std::cout <<  "Value: " << value << "  __Value : " << _value << std::endl;
+			std::ostringstream ss;
+			//ss.precision(15);
+			if (this->_type == INT8)
+				ss << (int)value;
+			else
+				ss <<  value;
+			_string.append(ss.str());
+			std::cout <<  "String: " << _string << std::endl;
 		}
 
 		virtual 	~Operand(){}
@@ -77,6 +88,7 @@ class Operand : public IOperand
 			tmpRes = (std::stod(this->toString())) + (std::stod(rhs.toString()));
 			precison = this->getHighPrecision(this->_precision, rhs.getPrecision());
 			type = op[precison].type;
+			result.precision(op[this->_type].precision);
 			result << tmpRes;
 
 			return (OperandFactory::getInstance()->createOperand(type, result.str()));
@@ -90,18 +102,20 @@ class Operand : public IOperand
 			double			tmpRes;
 
 			//DEBUG
-			std::cout << "This : " << std::stod(this->toString()) << std::endl;
-			std::cout << "Rhs : " << std::stod(rhs.toString()) << std::endl;
+			//std::cout << "This : " << this->toString() << std::endl;
+			//std::cout << "Rhs : " << rhs.toString() << std::endl;
 			/**/
 			tmpRes = (std::stod(this->toString())) - (std::stod(rhs.toString()));
+			std::cout << "Tmp Reslut : " << tmpRes << std::endl;
 			precison = this->getHighPrecision(this->_precision, rhs.getPrecision());
 			type = op[precison].type;
 			//DEBUG
-			std::cout << "TmpResult : " << tmpRes << std::endl;
+			//std::cout << "TmpResult : " << tmpRes << std::endl;
 			/**/
-			result << std::setprecision(op[this->_type].precision) << tmpRes;
+			result.precision(op[this->_type].precision);
+			result << tmpRes;
 			//DEBUG
-			//std::cout << "Result : " << result.str() << std::endl;
+			std::cout << "Result : " << result.str() << std::endl;
 			/**/
 			return (OperandFactory::getInstance()->createOperand(type, result.str()));
 		}
@@ -119,6 +133,7 @@ class Operand : public IOperand
 
 			precison = this->getHighPrecision(this->_precision, rhs.getPrecision());
 			type = op[precison].type;
+			result.precision(op[this->_type].precision);
 			result << (leftValue / rightValue);
 
 			return (OperandFactory::getInstance()->createOperand(type, result.str()));
@@ -134,6 +149,7 @@ class Operand : public IOperand
 			tmpRes = (std::stod(this->toString())) * (std::stod(rhs.toString()));
 			precison = this->getHighPrecision(this->_precision, rhs.getPrecision());
 			type = op[precison].type;
+			result.precision(op[this->_type].precision);
 			result << tmpRes;
 
 			return (OperandFactory::getInstance()->createOperand(type, result.str()));
@@ -152,6 +168,7 @@ class Operand : public IOperand
 
 			precison = this->getHighPrecision(this->_precision, rhs.getPrecision());
 			type = op[precison].type;
+			result.precision(op[this->_type].precision);
 			result << fmod(leftValue, rightValue);
 
 			return (OperandFactory::getInstance()->createOperand(type, result.str()));
@@ -159,17 +176,21 @@ class Operand : public IOperand
 
 		std::string const & toString( void ) const
 		{
-			std::string *str = new std::string();
+			/*std::string *str = new std::string();
 			std::ostringstream ss;
 
+			std::cout <<  "Str 1: " << _value << std::endl;
+			ss.precision(op[this->_type].precision);
 			if (this->_type == INT8)
 				ss << (int)this->_value;
 			else
-				ss << std::setprecision(op[this->_type].precision) << this->_value;
+				ss <<  this->_value;
+			//DEBUG
 			//std::cout << "SS : " << ss.str() << std::endl;
-			str->append(ss.str());
-			//std::cout << "Str : " << *str << std::endl;
-			return (*str);
+			str->append(ss.str());*/
+			//DEBUG
+			std::cout << "toString : " << _string << std::endl;
+			return (_string);
 		}
 };
 
