@@ -114,13 +114,14 @@ IOperand const * OperandFactory::createInt32( std::string const & value ) const
 IOperand const * OperandFactory::createFloat( std::string const & value ) const
 {
 	eOperandType	type;
-	float 			tmp = 0.0f;
+	float 			tmp;
+	//size_t			idx;
 
 	type = FLOAT;
-	tmp = static_cast<float>(std::stof(value));
+	tmp = std::stof(value);
 	//DEBUG
-	std::cout << "valFloat" << value << std::endl;
-	std::cout <<  "tmpFloat" << tmp << std::endl;
+	std::cout << "value: " << value << std::endl;
+	std::cout << "tmpFloat: " << tmp << std::endl;
 	if (checkLimitOp(type, value))
 	{
 		Operand<float> const *	data = new Operand<float>(type, tmp);
@@ -133,13 +134,13 @@ IOperand const * OperandFactory::createFloat( std::string const & value ) const
 IOperand const * OperandFactory::createDouble( std::string const & value ) const
 {
 	eOperandType	type;
-	double 			tmp = 0.0;
+	double 			tmp;
 
 	type = DOUBLE;
 	tmp = std::stod(value);
 
 	//DEBUG
-	std::cout <<  "tmpDouble" << tmp << std::endl;
+	//std::cout << std::setprecision(20) <<  "tmpDouble" << tmp << std::endl;
 
 	if (checkLimitOp(type, value))
 	{

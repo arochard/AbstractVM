@@ -19,8 +19,6 @@ class Operand : public IOperand
 		eOperandType	_type;
 		int				_precision;
 		T 				_value;
-		std::string 			_string;
-
 
 
 		Operand&		operator=(const Operand& src)
@@ -48,16 +46,6 @@ class Operand : public IOperand
 		{
 			int 	precision = type;
 			this->_precision = precision;
-
-			std::cout <<  "Value: " << value << "  __Value : " << _value << std::endl;
-			std::ostringstream ss;
-			//ss.precision(15);
-			if (this->_type == INT8)
-				ss << (int)value;
-			else
-				ss <<  value;
-			_string.append(ss.str());
-			std::cout <<  "String: " << _string << std::endl;
 		}
 
 		virtual 	~Operand(){}
@@ -82,49 +70,35 @@ class Operand : public IOperand
 		{
 			int 				precison;
 			eOperandType		type;
-			std::ostringstream	result;
 			double				tmpRes;
 
 			tmpRes = (std::stod(this->toString())) + (std::stod(rhs.toString()));
 			precison = this->getHighPrecision(this->_precision, rhs.getPrecision());
 			type = op[precison].type;
-			result.precision(op[this->_type].precision);
-			result << tmpRes;
 
-			return (OperandFactory::getInstance()->createOperand(type, result.str()));
+			return (OperandFactory::getInstance()->createOperand(type, std::to_string(tmpRes)));
 		}
 		
 		IOperand const * operator-( IOperand const & rhs ) const
 		{
 			int 			precison;
 			eOperandType		type;
-			std::ostringstream	result;
 			double			tmpRes;
+			double			leftValue = std::stod(this->toString());
+			double			rightValue = std::stod(rhs.toString());
 
-			//DEBUG
-			//std::cout << "This : " << this->toString() << std::endl;
-			//std::cout << "Rhs : " << rhs.toString() << std::endl;
-			/**/
-			tmpRes = (std::stod(this->toString())) - (std::stod(rhs.toString()));
-			std::cout << "Tmp Reslut : " << tmpRes << std::endl;
+			tmpRes = leftValue - rightValue;
 			precison = this->getHighPrecision(this->_precision, rhs.getPrecision());
 			type = op[precison].type;
-			//DEBUG
-			//std::cout << "TmpResult : " << tmpRes << std::endl;
-			/**/
-			result.precision(op[this->_type].precision);
-			result << tmpRes;
-			//DEBUG
-			std::cout << "Result : " << result.str() << std::endl;
-			/**/
-			return (OperandFactory::getInstance()->createOperand(type, result.str()));
+
+			return (OperandFactory::getInstance()->createOperand(type, std::to_string(tmpRes)));
 		}
 
 		IOperand const * operator/( IOperand const & rhs ) const
 		{
 			int 			precison;
 			eOperandType		type;
-			std::ostringstream	result;
+			double			tmpRes;
 			double			leftValue = std::stod(this->toString());
 			double			rightValue = std::stod(rhs.toString());
 
@@ -133,33 +107,29 @@ class Operand : public IOperand
 
 			precison = this->getHighPrecision(this->_precision, rhs.getPrecision());
 			type = op[precison].type;
-			result.precision(op[this->_type].precision);
-			result << (leftValue / rightValue);
+			tmpRes = leftValue / rightValue;
 
-			return (OperandFactory::getInstance()->createOperand(type, result.str()));
+			return (OperandFactory::getInstance()->createOperand(type, std::to_string(tmpRes)));
 		}
 		
 		IOperand const * operator*( IOperand const & rhs ) const
 		{
 			int 			precison;
 			eOperandType		type;
-			std::ostringstream	result;
 			double			tmpRes;
 
 			tmpRes = (std::stod(this->toString())) * (std::stod(rhs.toString()));
 			precison = this->getHighPrecision(this->_precision, rhs.getPrecision());
 			type = op[precison].type;
-			result.precision(op[this->_type].precision);
-			result << tmpRes;
 
-			return (OperandFactory::getInstance()->createOperand(type, result.str()));
+			return (OperandFactory::getInstance()->createOperand(type, std::to_string(tmpRes)));
 		}
 
 		IOperand const * operator%( IOperand const & rhs ) const
 		{
 			int 			precison;
 			eOperandType		type;
-			std::ostringstream	result;
+			double			tmpRes;
 			double			leftValue = std::stod(this->toString());
 			double			rightValue = std::stod(rhs.toString());
 
@@ -168,29 +138,29 @@ class Operand : public IOperand
 
 			precison = this->getHighPrecision(this->_precision, rhs.getPrecision());
 			type = op[precison].type;
-			result.precision(op[this->_type].precision);
-			result << fmod(leftValue, rightValue);
+			tmpRes = fmod(leftValue, rightValue);
 
-			return (OperandFactory::getInstance()->createOperand(type, result.str()));
+			return (OperandFactory::getInstance()->createOperand(type, std::to_string(tmpRes)));
 		}
 
 		std::string const & toString( void ) const
 		{
-			/*std::string *str = new std::string();
+			std::string *str = new std::string();
 			std::ostringstream ss;
 
-			std::cout <<  "Str 1: " << _value << std::endl;
-			ss.precision(op[this->_type].precision);
+			//std::cout <<  "Str 1: " << _value << std::endl;
+			//ss.precision(op[this->_type].precision);
 			if (this->_type == INT8)
-				ss << (int)this->_value;
+				ss << (int)_value;
 			else
-				ss <<  this->_value;
+				ss << _value;
 			//DEBUG
 			//std::cout << "SS : " << ss.str() << std::endl;
-			str->append(ss.str());*/
+			str->append(ss.str());
 			//DEBUG
-			std::cout << "toString : " << _string << std::endl;
-			return (_string);
+			//std::cout << "Val : " << this->_value << std::endl;
+			//std::cout << "toString : " << *str << std::endl;
+			return (*str);
 		}
 };
 

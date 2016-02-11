@@ -68,7 +68,7 @@ void		AbstractVM::dump()
 	else
 	{
 		for (listeOp::reverse_iterator rit = this->_stack.rbegin(); rit != this->_stack.rend(); ++rit)
-			std::cout << std::setprecision(op[(*rit)->getType()].precision) << (*rit)->toString() << std::endl;
+			std::cout << (*rit)->toString() << std::endl;
 	}
 }
 
